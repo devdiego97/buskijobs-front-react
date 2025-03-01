@@ -7,7 +7,7 @@ import { useAuthContext } from "../../../context/authContext"
 import apiCompany, { TCompany } from "../../../services/apiCompany"
 import { useNavigate } from "react-router-dom"
 import { useGlobalContext } from "../../../context/globalContext"
-import { CompanyInterface } from "../../../interfaces/company"
+import { ICompany } from "../../../interfaces/company"
 import FormControlLabel from "rsuite/esm/FormControlLabel"
 import { Page } from "./style"
 import {Text} from "rsuite"
@@ -20,7 +20,7 @@ import { TextArea } from "../../../componentes/TextArea"
 
 export default ()=>{
   const [open,setOpen]=useState(false)
-  const [companyId,setCompanyId]=useState<CompanyInterface | null>({} as CompanyInterface)
+  const [companyId,setCompanyId]=useState<ICompany | null>({} as ICompany)
   const {user,company}=useAuthContext()
   const {handleStateModal}=useGlobalContext()
   const [selectedFile, setSelectedFile] = useState<File | null>(null)
@@ -42,7 +42,7 @@ export default ()=>{
   useEffect(()=>{
     const getCompany=async()=>{
        if(user){
-         const response=await apiCompany.getCompanyFromUser(user.id as number) as CompanyInterface
+         const response=await apiCompany.getCompanyFromUser(user.id as number) as ICompany
           if(response.id){
             console.log(response)
             setCompanyId(response)

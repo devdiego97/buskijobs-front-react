@@ -1,6 +1,6 @@
 import axios from "axios"
 import { baseURL } from "../config/axios.config"
-import { CompanyInterface } from "../interfaces/company"
+import {ICompany } from "../interfaces/company"
 
 export type TCompany={
     idcreator:number,
@@ -20,7 +20,7 @@ export type TCompany={
 export default {
     getCompanyFromUser:async(idcreator:number)=>{
         try{
-            const response=await axios.get<CompanyInterface>(`${baseURL}users/${idcreator}/companys`)
+            const response=await axios.get<ICompany>(`${baseURL}users/${idcreator}/companys`)
 
              if(response.status === 200){
                return response.data    
@@ -33,7 +33,7 @@ export default {
     },
     getCompanyId:async(id:number)=>{
         try{
-            const response=await axios.get<CompanyInterface>(`${baseURL}companys/${id}`)
+            const response=await axios.get<ICompany>(`${baseURL}companys/${id}`)
             if(response.status === 200){
                 return response.data
             }else{
@@ -62,7 +62,7 @@ export default {
    
     updateCompanyFromUser:async(id:number)=>{
         try{
-            const response=await axios.get<CompanyInterface>(`${baseURL}companys/${id}`)
+            const response=await axios.get<ICompany>(`${baseURL}companys/${id}`)
             if(response.status === 200){
                 return response.data
             }else{

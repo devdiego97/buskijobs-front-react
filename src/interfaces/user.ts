@@ -1,5 +1,5 @@
 
-import { CompanyInterface } from "./company";
+import { ICompany} from "./company";
 import { ICurriculum } from "./curriculum";
 
 
@@ -12,6 +12,6 @@ export interface IUser{
     type:string,
     tel:string,
     photo:string,
-    company:CompanyInterface,
+    company:ICompany,
     curriculum:ICurriculum
 }

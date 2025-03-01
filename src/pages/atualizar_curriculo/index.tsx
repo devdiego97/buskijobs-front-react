@@ -3,7 +3,7 @@ import { ContentPage } from "../../componentes/ContentPage"
 import { Layout } from "../../componentes/Layout"
 import { TextArea } from "../../componentes/TextArea"
 import {  Page } from "./style"
-import { State, apiStatesCity } from "../../services/stateCity"
+import { IState, apiStatesCity } from "../../services/stateCity"
 import { useFormik } from "formik"
 import { schemaValidateCurriculum } from "../../validations/curriculum.validation"
 import { useAuthContext } from "../../context/authContext"
@@ -32,7 +32,7 @@ export const UpdateCurriculum=()=>{
     const {curriculumContext,setCurriculumContext}=useAuthContext()
     const [stateSelected,setStateSelected]=useState<string | null>(null) //estado string
     const [citySelected,setCitySelected]=useState<string | null>(null)         //estado object
-    const [statesList,setStatesList]=useState<State[] | []>([])   //lista de estados
+    const [statesList,setStatesList]=useState<IState[] | []>([])   //lista de estados
     const [cityList,setCityList]=useState<{id:number,nome:string}[] | []>([])    //lista de cidades do estado
    
 
@@ -50,7 +50,7 @@ const handleSelectChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
     
 useEffect(()=>{
     const getStates=async()=>{
-        const listStates=await apiStatesCity.getStates() as State[]
+        const listStates=await apiStatesCity.getStates() as IState[]
         setStatesList(listStates)
     }
     getStates()

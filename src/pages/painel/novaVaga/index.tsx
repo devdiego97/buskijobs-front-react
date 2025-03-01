@@ -3,11 +3,11 @@ import { ContentPage } from "../../../componentes/ContentPage"
 import { Painel } from "../../../componentes/Painel"
 import { GridFlexInput, Page} from "./style"
 import apiCategory from "../../../services/apiCategory"
-import { CategoryInterface } from "../../../interfaces/category"
+import { ICategory } from "../../../interfaces/category"
 import { useFormik } from "formik"
 import { schemaValidationJobs } from "../../../validations/jobs.validation"
 import { useGlobalContext } from "../../../context/globalContext"
-import { apiStatesCity, State } from "../../../services/stateCity"
+import { apiStatesCity, IState } from "../../../services/stateCity"
 import { useAuthContext } from "../../../context/authContext"
 import {Button,InputNumber} from "rsuite"
 import {  DatePicker,  Form, HStack, Input, Radio, RadioGroup, SelectPicker, VStack } from "rsuite"
@@ -28,14 +28,14 @@ export const NovaVagaPainel=()=>{
   const [newReq,setNewReq]=useState('')
   const [requirements,setRequirements]=useState<string[] | []>([])
   const {company}=useAuthContext()
-  const [categorys,setCategorys]=useState<CategoryInterface[] | []>([])
+  const [categorys,setCategorys]=useState<ICategory[] | []>([])
   const [exclusivePCD,setExclusivePCD]=useState<string>('0')
   const [errorCompanyId,setErrorCompanyId]=useState(false)
   const {handleStateModal}=useGlobalContext()
   const contracts=['CLT','CNPJ','Freelancer','Estágiario','Trainne']
   
   const ModelContract=['Presencial','Remoto','Home Office']
-  const [statesList,setStatesList]=useState<State[] | []>([])   //lista de estados
+  const [statesList,setStatesList]=useState<IState[] | []>([])   //lista de estados
   const [cityList,setCityList]=useState<{id:number,nome:string}[] | []>([])    //lista de cidades do estado
   const [stateSelected,setStateSelected]=useState<string>(statesList[0]?.sigla) //estado string
   const [citySelected,setCitySelected]=useState<string>('')         //estado object
@@ -61,7 +61,7 @@ export const NovaVagaPainel=()=>{
 
   useEffect(()=>{
     const getStates=async()=>{
-        const listStates=await apiStatesCity.getStates() as State[]
+        const listStates=await apiStatesCity.getStates() as IState[]
         setStatesList(listStates)
     }
     getStates()
@@ -131,7 +131,7 @@ useEffect(()=>{
   useEffect(()=>{
     //Listando categorias de vagas no select
     const getListCategorys=async()=>{
-      const list=await apiCategory.getCategorys() as CategoryInterface[]
+      const list=await apiCategory.getCategorys() as ICategory[]
       setCategorys(list)
     }
 

@@ -1,6 +1,6 @@
 import { IApplication } from "./application";
 import { ICategory } from "./category";
-import { CompanyInterface } from "./company";
+import {ICompany } from "./company";
 import { IContractType } from "./contractType";
 import { ILevels } from "./levels";
 import { IModelOperating } from "./modelOperating";
@@ -22,7 +22,7 @@ export  interface IJob{
     contractTypeId: number | string,
     modelOperatingId: number | string,
     levelId: number | string,
-    company:CompanyInterface,
+    company:ICompany,
     applications:IApplication[] ,
     status:string,
     datSubscriptionMax:Date | string,

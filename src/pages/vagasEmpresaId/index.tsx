@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react"
 import { Layout } from "../../componentes/Layout"
-import { CompanyInterface } from "../../interfaces/company"
+import { ICompany } from "../../interfaces/company"
 import apiCompany from "../../services/apiCompany"
 import { useNavigate, useParams } from "react-router-dom"
 import {  Page } from "./style"
@@ -9,8 +9,8 @@ import { IJob } from "../../interfaces/job"
 import Insta from "../../assets/svgs/Insta"
 import Linked from "../../assets/svgs/linked"
 import Website from "../../assets/svgs/website"
-import { CategoryInterface } from "../../interfaces/category"
-import { apiStatesCity, State } from "../../services/stateCity"
+import { ICategory } from "../../interfaces/category"
+import { apiStatesCity, IState } from "../../services/stateCity"
 import apiCategory from "../../services/apiCategory"
 import Filter from "../../assets/svgs/filter"
 import { Button, Card, Divider, HStack, SelectPicker, Text, VStack } from "rsuite"
@@ -28,12 +28,12 @@ export const VagasEmpresaId=()=>{
     const [contractTypes,setContractTypes]=useState<IContractType[] | []>([])
     const [modelsOperating,setModelsOperating]=useState<IModelOperating[] | []>([])
     const [levels,setLevels]=useState<ILevels[] | []>([])
-    const [companyId,setCompanyId]=useState<CompanyInterface | null>(null)
+    const [companyId,setCompanyId]=useState<ICompany | null>(null)
     const {id}=useParams()
-    const [categorys,setCategorys]=useState<CategoryInterface[] | []>([])
+    const [categorys,setCategorys]=useState<ICategory[] | []>([])
     const [stateSelected,setStateSelected]=useState<string>('0') //estado string
     const [citySelected,setCitySelected]=useState<string>('0')         //estado object
-    const [statesList,setStatesList]=useState<State[] | []>([])   //lista de estados
+    const [statesList,setStatesList]=useState<IState[] | []>([])   //lista de estados
     const [cityList,setCityList]=useState<{id:number,nome:string}[] | []>([])    //lista de cidades do estado
     const listContractType=['Estágio','Trainne','Freelancer','CLT','CNPJ']
     const [contractType,setContractType]=useState('Estágio')
@@ -43,7 +43,7 @@ export const VagasEmpresaId=()=>{
     useEffect(()=>{
       //Pegar Uma Empresa pelo seu Id,retornando tambem as suas vagas
        const getCompany=async()=>{
-        const response=await apiCompany.getCompanyId(parseInt(id as string)) as CompanyInterface
+        const response=await apiCompany.getCompanyId(parseInt(id as string)) as ICompany
         setCompanyId(response)
             
        }
@@ -94,7 +94,7 @@ const removeFilters=()=>{
       //Buscando na api a lista de cidades  
     useEffect(()=>{
             const getStates=async()=>{
-                const listStates=await apiStatesCity.getStates() as State[]
+                const listStates=await apiStatesCity.getStates() as IState[]
                 setStatesList(listStates)
             }
     getStates()
@@ -117,7 +117,7 @@ useEffect(()=>{
 //Listando categorias de vagas no select
  useEffect(()=>{
      const getListCategorys=async()=>{
-        const list=await apiCategory.getCategorys() as CategoryInterface[]
+        const list=await apiCategory.getCategorys() as ICategory[]
        setCategorys(list)
       }
         

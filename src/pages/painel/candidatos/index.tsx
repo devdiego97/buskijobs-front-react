@@ -9,9 +9,9 @@ import Loading from "../../../componentes/Loading"
 import { GlobalStyle } from "../../../globalStyle"
 import { useGlobalContext } from "../../../context/globalContext"
 import { ErrorCompany } from "../../../componentes/ErrorCompany"
-import { CategoryInterface } from "../../../interfaces/category"
+import { ICategory} from "../../../interfaces/category"
 import apiCategory from "../../../services/apiCategory"
-import { apiStatesCity, State } from "../../../services/stateCity"
+import { apiStatesCity, IState } from "../../../services/stateCity"
 import { Button, Card, HStack, SelectPicker, Tag, Text, VStack } from "rsuite"
 import { ILevels } from "../../../interfaces/levels"
 import apiLevels from "../../../services/apiLevels"
@@ -22,11 +22,11 @@ import apiLevels from "../../../services/apiLevels"
 export const CandidatosPainel=()=>{
 
      const [levels,setLevels]=useState<ILevels[] | []>([])
-    const [categorys,setCategorys]=useState<CategoryInterface[] | []>([])
+    const [categorys,setCategorys]=useState<ICategory[] | []>([])
     const [listCandidates,setListCandidates]=useState<ICurriculum[] | null>(null)
     const [stateSelected,setStateSelected]=useState<string>('0') //estado string
     const [citySelected,setCitySelected]=useState<string>('0')            //estado object
-    const [statesList,setStatesList]=useState<State[] | []>([])   //lista de estados
+    const [statesList,setStatesList]=useState<IState[] | []>([])   //lista de estados
     const [cityList,setCityList]=useState<{id:number,nome:string}[] | []>([])    //lista de cidades do estado
     const [loadingProfessionals,setLodingProfessionals]=useState<boolean>(true)
     const {handleStateModal}=useGlobalContext()
@@ -75,7 +75,7 @@ useEffect(
 
 useEffect(()=>{
       const getStates=async()=>{
-          const listStates=await apiStatesCity.getStates() as State[]
+          const listStates=await apiStatesCity.getStates() as IState[]
           setStatesList(listStates)
       }
 
@@ -107,7 +107,7 @@ useEffect(()=>{
     useEffect(()=>{
       //Listando categorias de vagas no select
       const getListCategorys=async()=>{
-        const list=await apiCategory.getCategorys() as CategoryInterface[]
+        const list=await apiCategory.getCategorys() as ICategory[]
         setCategorys(list)
       }
   

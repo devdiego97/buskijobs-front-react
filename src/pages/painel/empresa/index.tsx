@@ -2,7 +2,7 @@ import { useEffect, useState } from "react"
 import { BoxBgImg, Page } from "./style"
 import { Link, useNavigate } from "react-router-dom"
 import { Painel } from "../../../componentes/Painel"
-import { CompanyInterface } from "../../../interfaces/company"
+import {ICompany } from "../../../interfaces/company"
 import apiCompany from "../../../services/apiCompany"
 import { baseURL } from "../../../config/axios.config"
 import { useAuthContext } from "../../../context/authContext"
@@ -15,7 +15,7 @@ import { apiJobs } from "../../../services/jobs.action"
 
 
 export const EmpresaPainel=()=>{
-    const [companyId,setCompanyId]=useState<CompanyInterface | null>(null)
+    const [companyId,setCompanyId]=useState<ICompany| null>(null)
     const {user}=useAuthContext()
    const {handleStateModal}=useGlobalContext()
    const navigate=useNavigate()
@@ -38,7 +38,7 @@ export const EmpresaPainel=()=>{
     useEffect(()=>{
        const getCompany=async()=>{
           if(user){
-            const response=await apiCompany.getCompanyFromUser(user.id as number) as CompanyInterface
+            const response=await apiCompany.getCompanyFromUser(user.id as number) as ICompany
             if(response.name){
               setCompanyId(response)
             }else{

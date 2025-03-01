@@ -1,7 +1,7 @@
 import { IJob } from "./job";
 import { IUser } from "./user";
 
-export interface CompanyInterface{
+export interface ICompany{
     id:number,
     idcreator:number,
     name:string,
