@@ -3,7 +3,7 @@ import { RiCloseLargeFill as Close } from "react-icons/ri";
 import { useAuthContext } from "../../context/authContext"
 import apiSkill from "../../services/apiSkill"
 import { toast } from "react-toastify"
-import { Button, Card,HStack,Text,Input, Divider, TagGroup, Tag, IconButton, VStack, Container, Stack } from "rsuite"
+import { Button, Card,HStack,Text,Input, Divider, TagGroup, Tag, IconButton} from "rsuite"
 import { FaTools as ToolsIcon} from "react-icons/fa";
 import { GlobalStyle } from "../../globalStyle"
 import Tooltip from "../Tooltip";

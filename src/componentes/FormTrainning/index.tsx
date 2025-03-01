@@ -64,13 +64,13 @@ const formik=useFormik({
                     <TrainningIcon size={'xs'} style={{height:'45px',margin:'0 12px'}} color={`${GlobalStyle.bgTheme}`} />
                 <Text as='h3'>Formação</Text>
                 </HStack>
-                    <Button size="sm"  onClick={()=>setNewTrainning(true)}>adicionar nova</Button>
+                    {!newTrainning &&  <Button size="sm"  color="blue" appearance="primary"  onClick={()=>setNewTrainning(true)}>adicionar nova</Button>}
             </HStack>
        </Text>
        <Card.Body>
             {newTrainning && <Card style={{padding:'9px'}}>
                <HStack justifyContent="space-between" alignItems="center">
-                   <Text>Nova Formação</Text>
+                   <Text as='h6'>Nova Formação</Text>
                    <Tooltip  text="fechar" placement="right" trigger="hover">
                        <IconButton onClick={()=>setNewTrainning(false)} appearance="primary" color="red" icon={<Close/>} />
                   </Tooltip>

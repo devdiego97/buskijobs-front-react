@@ -53,15 +53,15 @@ const formik=useFormik({
     <HStack>
         <HStack justifyContent="center" alignItems="center">
             <Job size={'xs'} style={{height:'45px',margin:'0 12px'}} color={`${GlobalStyle.bgTheme}`} />
-        <Text as='h3'>Formação</Text>
+        <Text as='h3'>Experiência</Text>
         </HStack>
-            <Button size="sm"  onClick={()=>setNewExperience(true)}>adicionar nova</Button>
+           {!newExperience  && <Button size="sm"  color="blue" appearance="primary"   onClick={()=>setNewExperience(true)}>adicionar nova</Button>}
     </HStack>
 </Text>
 <Card.Body>
     {newExperience && <Card style={{padding:'9px'}}>
        <HStack justifyContent="space-between" alignItems="center">
-           <Text>Nova Formação</Text>
+           <Text as='h5'>Nova Experiência</Text>
            <Tooltip  text="fechar" placement="right" trigger="hover">
                <IconButton onClick={()=>setNewExperience(false)} appearance="primary" color="red" icon={<Close/>} />
           </Tooltip>
