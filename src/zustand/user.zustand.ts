@@ -12,13 +12,13 @@ interface IUserStore {
 }
 
 // Cria o store com persistência
-const useCurriculumStore = create<IUserStore>()(
+const useUserStore = create<IUserStore>()(
   persist(
     (set) => ({
         user:null,
         saveUser: (newUser:IUser | null) => set({ user: newUser}),
         deleteUser: () => set(() => ({ user:null})),
-     
+      
     }),
     {
       name: 'user-str', // Nome da chave no localStorage
@@ -27,4 +27,4 @@ const useCurriculumStore = create<IUserStore>()(
   )
 );
 
-export default useCurriculumStore;
+export default useUserStore;

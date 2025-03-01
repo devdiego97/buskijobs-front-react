@@ -27,11 +27,13 @@ import EyeCloseIcon from '@rsuite/icons/EyeClose'
 import VisibleIcon from '@rsuite/icons/Visible'
 import CheckIcon from '@rsuite/icons/Check'
 import CloseIcon from '@rsuite/icons/Close'
+import useThemeStore from "../../zustand/theme.zustand"
 
 
 
 export const Conta=()=>{
-     const {theme,handleTheme}=useGlobalContext()
+    const {theme,handleTheme}=useThemeStore()
+     
      const [visible, setVisible] =useState(false)
      const [open,setOpen]=useState(false)
      const [targetRef,setTargetRef]=useState(null)
