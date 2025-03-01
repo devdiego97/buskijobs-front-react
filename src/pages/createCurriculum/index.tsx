@@ -18,17 +18,16 @@ import { DatePicker, Form, HStack, Radio, RadioGroup,Input, SelectPicker, Button
 import FormGroup from "rsuite/esm/FormGroup"
 import { date } from "yup"
 import FormControlLabel from "rsuite/esm/FormControlLabel"
+import useCurriculumStore from "../../zustand/curriculum.zustand"
 
 
 
 
 export const CreateCurriculum=()=>{
-
+   const {curriculum}=useCurriculumStore()
 
     const {user}=useAuthContext()
     const [formsCurriculum,setFormsCurriculum]=useState(false)
-    const [curriculum,setCurriculum]=useState(false)
-    const {curriculumContext,setCurriculumContext}=useAuthContext()
     const [stateSelected,setStateSelected]=useState<string | null>(null) //estado string
     const [citySelected,setCitySelected]=useState<string | null>(null)         //estado object
     const [statesList,setStatesList]=useState<IState[] | []>([])   //lista de estados
@@ -79,18 +78,18 @@ useEffect(()=>{
 
 const formik=useFormik({
     initialValues:{
-        name: curriculumContext?.name ? curriculumContext.name : user?.name,
-        lastname:curriculumContext?.lastname ? curriculumContext.lastname : user?.lastname,
-        tel:curriculumContext?.tel ? curriculumContext.tel : user?.tel,
-        office:curriculumContext?.office ? curriculumContext.office : '',
-        pcd:curriculumContext?.pcd  ? curriculumContext.pcd : 'Nao' ,
-        deficiency:curriculumContext?.deficiency ? curriculumContext.deficiency : '',
-        email:curriculumContext?.email ? curriculumContext.email : user?.email,
-        github:curriculumContext?.github ? curriculumContext.github : '',
-        linkedin:curriculumContext?.linkedin ? curriculumContext.linkedin : '',
-        about:curriculumContext?.about ? curriculumContext.about : '',
-        city:curriculumContext?.city ? curriculumContext.city: '',
-        state: curriculumContext?.state ? curriculumContext.state : stateSelected,
+        name: curriculum?.name ? curriculum.name : user?.name,
+        lastname:curriculum?.lastname ? curriculum.lastname : user?.lastname,
+        tel:curriculum?.tel ? curriculum?.tel : user?.tel,
+        office:curriculum?.office ? curriculum?.office : '',
+        pcd:curriculum?.pcd  ? curriculum?.pcd : 'Nao' ,
+        deficiency:curriculum?.deficiency ? curriculum.deficiency : '',
+        email:curriculum?.email ? curriculum.email : user?.email,
+        github:curriculum?.github ? curriculum.github : '',
+        linkedin:curriculum?.linkedin ? curriculum.linkedin : '',
+        about:curriculum?.about ? curriculum.about : '',
+        city:curriculum?.city ? curriculum.city: '',
+        state: curriculum?.state ? curriculum.state : stateSelected,
         dateNasc:'',
 
   },
