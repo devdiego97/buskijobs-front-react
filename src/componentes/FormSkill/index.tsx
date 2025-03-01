@@ -40,7 +40,7 @@ const deleteSkillId=async(id:number)=>{
                <ToolsIcon size={'xs'} style={{height:'45px'}} color={`${GlobalStyle.bgTheme}`} />
               <Text as='h4'>Habilidades</Text>
             </HStack>
-               <Button size="sm"  onClick={()=>setNewSkill(true)}>adicionar nova</Button>
+              {!newSkill &&  <Button appearance="primary" color="blue" size="sm"  onClick={()=>setNewSkill(true)}>adicionar nova</Button>}
           </HStack>
         </Text>
         <Card>
