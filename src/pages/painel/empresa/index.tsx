@@ -1,21 +1,22 @@
 import { useEffect, useState } from "react"
-import { BoxBgImg, Page } from "./style"
-import { Link, useNavigate } from "react-router-dom"
+import {  Link, useNavigate } from "react-router-dom"
 import { Painel } from "../../../componentes/Painel"
 import {ICompany } from "../../../interfaces/company"
 import apiCompany from "../../../services/apiCompany"
-import { baseURL } from "../../../config/axios.config"
 import { useAuthContext } from "../../../context/authContext"
 import { toast } from "react-toastify"
 import swal from "sweetalert"
 import { useGlobalContext } from "../../../context/globalContext"
-import { Button, Card, Divider, FlexboxGrid, HStack, Tabs, Tag, Text,  } from "rsuite"
+import { Button, Card, Container, Divider, FlexboxGrid, Heading, HStack, Tabs, Tag, Text,  } from "rsuite"
 import { apiJobs } from "../../../services/jobs.action"
+import useCompanyStore from "../../../zustand/company.zustand"
+import { BoxBgImg, ErrorCompany, Page } from "./style"
+import { baseURL } from "../../../config/axios.config"
 
 
 
 export const EmpresaPainel=()=>{
-    const [companyId,setCompanyId]=useState<ICompany| null>(null)
+    const{company,saveCompany,deleteCompany}=useCompanyStore()
     const {user}=useAuthContext()
    const {handleStateModal}=useGlobalContext()
    const navigate=useNavigate()
@@ -23,26 +24,16 @@ export const EmpresaPainel=()=>{
    const nav=(path:string)=>{
     navigate(path)
    }
-    useEffect(()=>{
-      const hasCompanyStorageVerify=()=>{
-        const companyStorage=localStorage.getItem('@companyid')
-        if(companyStorage !== 'undefined'){
-          handleStateModal(false)
-        }else{
-          handleStateModal(true)
-        }
-      }
-      hasCompanyStorageVerify()
-    },[])
+   
 
     useEffect(()=>{
        const getCompany=async()=>{
           if(user){
-            const response=await apiCompany.getCompanyFromUser(user.id as number) as ICompany
+            const response=await apiCompany.getCompanyFromUser(company?.user.id as number) as ICompany
             if(response.name){
-              setCompanyId(response)
+             saveCompany(company as ICompany)
             }else{
-              setCompanyId(null)
+             saveCompany(null)
             }
            }
         }
@@ -50,7 +41,7 @@ export const EmpresaPainel=()=>{
     },[])
 
 
-const deleteCompany=async()=>{
+const deleteCompanyFromApi=async()=>{
     swal({
       title:'Tem certeza?',
       text: 'Se deletar essa empresa todas as vagas vinculadas á ela serão deletadas?',
@@ -76,13 +67,13 @@ const deleteCompany=async()=>{
       ,
     }).then((result) => {
       if (result) {
-         if(companyId){
+         if(company){
             const deleteCompany=async()=>{
-            await apiCompany.deleteCompanyFromUser(companyId?.id)
+            await apiCompany.deleteCompanyFromUser(company?.id)
           }
           deleteCompany()
          }
-          localStorage.removeItem('@companyid')
+          
           navigate('/painel/recrutador')
           toast.success('Empresa deletada')
       } else {
@@ -126,28 +117,28 @@ const deleteCompany=async()=>{
         }
       })
 }
-
+ 
     return <Painel p="0">
       <Page>
         {
-          companyId ?  <>
+          company ?  <>
           <div className="header-page">
               <div className="logo-name">
-                  <BoxBgImg urlImg={`${baseURL}public/images/${companyId?.logo}`}  />
-                  <h2>{companyId?.name}</h2>
+                  <BoxBgImg  urlImg={`${baseURL}public/images/${company?.logo}`}  />
+                  <h2>{company?.name}</h2>
               </div>
               <HStack justifyContent="flex-end" style={{padding:'30px'}}>
 
-                   <Link color="white" to={`/painel/recrutador/${user?.name.toLowerCase()}/${companyId.name.toLowerCase()}/edite_empresa`} >
+                   <Link color="white" to={`/painel/recrutador/${user?.name.toLowerCase()}/${company.name}/edite_empresa`} >
                      <Button appearance="primary" >Editar</Button>
                    </Link>
-                  <Button appearance="primary" color="red"  onClick={deleteCompany} >Deletar</Button>
+                  <Button appearance="primary" color="red"  onClick={deleteCompanyFromApi} >Deletar</Button>
               </HStack>
             </div>
           <main className="content">
               <section>
                   <h3>Sobre Nós</h3>
-                  <p>{companyId?.about}</p>
+                  <p>{company?.about}</p>
               </section>
               <section>
                   <section className="vagas">
@@ -155,10 +146,10 @@ const deleteCompany=async()=>{
                     <Tabs defaultActiveKey="1"   >
                     <Tabs.Tab eventKey="1" title="Ativas">
                       <HStack>
-                        <Text as={'strong'} style={{ margin:'12px' }} color="blue">51 vagas Ativas</Text>
+                       
                       </HStack>
                      <FlexboxGrid justify="center" >
-                      {companyId.jobs.map(j=>
+                      {company.jobs && company.jobs.map(j=>
                           <FlexboxGrid.Item colspan={6} style={{ margin:'12px'}}>
                             <Card style={{ width:'100%' }}>
                             <Card.Header>
@@ -173,7 +164,7 @@ const deleteCompany=async()=>{
                             </Card.Body>
                             <Card.Body>
                              <Card.Footer>
-                                <Button   onClick={()=>nav(`/painel/recrutador/${user?.name}/${user?.company}/vagaspostadas/${j.id}`)}  block appearance="primary" >ver vaga</Button>
+                                <Button   onClick={()=>nav(`/painel/recrutador/${user?.name}/${company.name.toLowerCase()}/vagaspostadas/${j.id}`)}  block appearance="primary" >ver vaga</Button>
                              </Card.Footer>
                             </Card.Body>
                           </Card>
@@ -183,10 +174,10 @@ const deleteCompany=async()=>{
                     </Tabs.Tab>
                     <Tabs.Tab eventKey="2"  title="Congeladas">
                     <HStack>
-                        <Text as={'strong'} style={{ margin:'12px' }} color="orange">51 vagas Congeladas</Text>
+                       
                       </HStack>
                      <FlexboxGrid justify="center" >
-                      {companyId.jobs.map(j=>
+                      {company?.jobs.map(j=>
                           <FlexboxGrid.Item colspan={6} style={{ margin:'12px'}}>
                             <Card style={{ width:'100%' }}>
                             <Card.Header>
@@ -212,10 +203,10 @@ const deleteCompany=async()=>{
                     </Tabs.Tab>
                     <Tabs.Tab eventKey="3" title="Finalizadas">
                     <HStack>
-                        <Text as={'strong'}  style={{ margin:'12px' }} color="red">51 vagas Finalizadas</Text>
+                      
                       </HStack>
                      <FlexboxGrid justify="center" >
-                      {companyId.jobs.map(j=>
+                      {company?.jobs?.map(j=>
                           <FlexboxGrid.Item colspan={6} style={{ margin:'12px'}}>
                             <Card style={{ width:'100%' }}>
                             <Card.Header>
@@ -249,13 +240,19 @@ const deleteCompany=async()=>{
               </section>
           </main>
        
-       </> : <HStack>
-        <Text>Você não cadastrou sua empresa</Text>.<Link to={`/painel/recrutador/configure_empresa `}>clique aqui</Link>
-       </HStack>
-      
+       </> : <ErrorCompany>
+            <div>
+              <Heading>Você ainda não cadastrou sua empresa</Heading>
+              <p>Clique aqui para preencher dados da empresa e desbloquear funcionalidades</p>
+              <Button appearance="primary" color="blue" size="lg" 
+                onClick={()=>nav(`/painel/recrutador/${user?.name.toLowerCase()}/configure-empresa`)}
+                block style={{margin:'40px 0'}}>Cadastrar minha Empresa</Button>
+            </div>
+        </ErrorCompany>
         }
-       </Page>
-    </Painel>
+
+       </Page>  
+   </Painel>
    
 }
 

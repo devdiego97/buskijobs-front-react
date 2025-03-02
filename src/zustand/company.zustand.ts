@@ -7,7 +7,7 @@ import { ICompany } from '../interfaces/company';
 // Define o tipo do estado
 interface ICompanyStore {
   company: ICompany | null,
-  saveCompany: (newCompany:ICompany) => void;
+  saveCompany: (newCompany:ICompany | null) => void;
   deleteCompany: () => void;
  
 }
@@ -17,7 +17,7 @@ const useCompanyStore = create<ICompanyStore>()(
   persist(
     (set) => ({
         company:null,
-        saveCompany: (newCompany:ICompany) => set({ company: newCompany}),
+        saveCompany: (newCompany:ICompany | null) => set({ company: newCompany}),
         deleteCompany: () => set(() => ({ company:null})),
      
     }),

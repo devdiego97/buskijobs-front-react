@@ -57,7 +57,7 @@ export const Routes=()=>{
             <Route path="/painel/recrutador/atualizarvaga/:id" element={<Private><PrivateRecruiter><AtualizarVagaPainel /></PrivateRecruiter></Private>}/>
             <Route path={`/painel/recrutador/:nomerecrutador/minha-conta`} element={<Private><PrivateRecruiter><ContaPainel /></PrivateRecruiter></Private>}/>
             <Route path={`/painel/recrutador/:nomerecrutador/:empresa?`} element={<Private><EmpresaPainel/></Private>}/>
-            <Route path="/painel/recrutador/configure_empresa" element={<Private><PrivateRecruiter><AddEmpresa /></PrivateRecruiter></Private>}/>
+            <Route path="/painel/recrutador/:nomerecrutador/configure-empresa" element={<Private><PrivateRecruiter><AddEmpresa /></PrivateRecruiter></Private>}/>
             <Route path={`/painel/recrutador/:nomerecrutador/:empresa/edite_empresa`} element={<Private><PrivateRecruiter><AtualizarEmpresa /></PrivateRecruiter></Private>}/>
             <Route path="/painel/recrutador/planos" element={<Planos />}/>
             <Route path="*" element={<PaginaNaoEncontrada />}/>
@@ -66,7 +66,7 @@ export const Routes=()=>{
        
         <>
              <Route path="/vagas" element={<Vagas/>}/>
-             <Route path="/vagas/:id" element={<VagaId />}/>
+             <Route path="/vagas/:id" element={<VagaId />}/>  
              <Route path="/mensagens" element={<Mensagens />}/>
              <Route path="/:empresa/:id/vagas" element={<VagasEmpresaId />}/>
              <Route path="/candidaturas" element={<Private><PrivateCandidate><Candidaturas /></PrivateCandidate></Private>}/>

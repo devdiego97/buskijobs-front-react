@@ -15,10 +15,17 @@ import CameraRetroIcon from '@rsuite/icons/legacy/CameraRetro';
 import { toast } from "react-toastify"
 import linkedin from "../../../assets/svgs/linkedin"
 import FormControl from "rsuite/esm/FormControl"
-import { TextArea } from "../../../componentes/TextArea"
+import {  Message,useToaster } from 'rsuite';
+import BuildingIcon from '@rsuite/icons/legacy/Building'; // Ícone de empresa
+import { FaCamera } from "react-icons/fa";
+
 
 
 export default ()=>{
+  const toaster = useToaster();
+  const [uploading, setUploading]=useState<boolean>(false);
+  const [fileInfo, setFileInfo] = useState<string | null>(null);
+
   const [open,setOpen]=useState(false)
   const [companyId,setCompanyId]=useState<ICompany | null>({} as ICompany)
   const {user,company}=useAuthContext()
@@ -29,6 +36,17 @@ export default ()=>{
   const [errorImage,setErrorImage]=useState(false)
   const navigate=useNavigate()
 
+  type PreviewFileCallback = (result: string | ArrayBuffer | null) => void;
+
+const  previewFile=(file: File, callback: PreviewFileCallback)=>{
+    const reader = new FileReader();
+    reader.onloadend = () => {
+      callback(reader.result);
+    };
+    reader.readAsDataURL(file);
+  }
+
+  
 
   useEffect(()=>{
     if(loading){
@@ -61,20 +79,7 @@ export default ()=>{
 
 
 
-  const handleFileChange = (event: ChangeEvent<HTMLInputElement>) => {
-    const file = event.target.files?.[0];
-    if (file) {
-      setSelectedFile(file)
-      const reader = new FileReader();
-      reader.onload = () => {
-        setSelectedImage(reader.result);
-      
-      };
-      reader.readAsDataURL(file);
-    }
-  };
 
- 
 
 
 
@@ -140,24 +145,30 @@ export default ()=>{
       
 })
   
+
     return <Painel>
           <Page>
             <div className="content">
               <Form fluid>
                 <Text as={"h3"} style={{margin:'50px 0'}}>Atualize dados da empresa</Text>
                 <Form.Group className="stack">
-                    <FormControlLabel >Logo da Empresa</FormControlLabel>
-                   
+                    <FormControlLabel as='strong'>Logo da Empresa</FormControlLabel>
+                      <Uploader listType="picture" action={""}>
+                        <button>
+                          <FaCamera size="1rem" />
+                        </button>
+                      </Uploader>
+     
                 </Form.Group>
                 <Form.Group className="stack">
-                    <FormControlLabel >Nome da Empresa</FormControlLabel>
+                    <FormControlLabel as='strong'>Nome da Empresa</FormControlLabel>
                     <FormControl name="name" onChange={v=>formik.setFieldValue('name',v)} 
                        placeholder="digite o nome da empresa"  value={formik.values.name}
                       />
                     <Form.ErrorMessage placement="rightEnd" className="msg-error" show={!!formik.errors.name}>{formik.errors.name}</Form.ErrorMessage>
                 </Form.Group>
                 <Form.Group>
-                    <FormControlLabel>Email</FormControlLabel>
+                    <FormControlLabel as={'strong'}>Email</FormControlLabel>
                     <FormControl  name="email" placeholder="empresa@gmail.com" type="email" 
                       onChange={v=>formik.setFieldValue('email',v)} 
                       value={formik.values.email} 
@@ -165,21 +176,21 @@ export default ()=>{
                   <Form.ErrorMessage   placement="rightEnd" className="msg-error"  show={!!formik.errors.email}>{formik.errors.email}</Form.ErrorMessage>
                 </Form.Group>
                 <Form.Group>
-                    <FormControlLabel>Telefone</FormControlLabel>
+                    <FormControlLabel as='strong'>Telefone</FormControlLabel>
                     <FormControl name="tel" placeholder="00000000000" type="tel" 
                     onChange={v=>formik.setFieldValue('tel',v)}  value={formik.values.tel} 
                     />
                   <Form.ErrorMessage   placement="rightEnd" className="msg-error" show={!!formik.errors.tel}>{formik.errors.tel}</Form.ErrorMessage>
                 </Form.Group>
                 <Form.Group>
-                    <FormControlLabel>Site</FormControlLabel>
+                    <FormControlLabel as='strong'>Site</FormControlLabel>
                     <Input name="site" type="url" placeholder="digite a url do site da empresa" 
                        onChange={v=>formik.setFieldValue('site',v)}  value={formik.values.site}
                      />
                     <Form.ErrorMessage  placement="rightEnd" className="msg-error" show={!!formik.errors.site}>{formik.errors.site}</Form.ErrorMessage>
                 </Form.Group>
                 <Form.Group>
-                    <FormControlLabel>Linkedin</FormControlLabel>
+                    <FormControlLabel as='strong'>Linkedin</FormControlLabel>
                     <FormControl name="linkedin" placeholder="digite a url do linkedin da empresa"  type="url" 
                        onChange={v=>formik.setFieldValue('linkedin',v)}  value={formik.values.linkedin} 
                     />
@@ -187,17 +198,17 @@ export default ()=>{
                 </Form.Group>
                
                 <Form.Group>
-                    <FormControlLabel>CNPJ</FormControlLabel>
+                    <FormControlLabel as='strong'>CNPJ</FormControlLabel>
                   <FormControl name="cnpj" pattern="/^\d{14}$/" type="number" placeholder="digite o cnpj da empresa" onChange={v=>formik.setFieldValue('cnpj',v)}  value={formik.values.cnpj} />
                   <Form.ErrorMessage  placement="rightEnd" className="msg-error" show={!!formik.errors.cnpj}>{formik.errors.cnpj}</Form.ErrorMessage>
                 </Form.Group>
                  <Form.Group>
-                    <FormControlLabel>Sobre a Empresa</FormControlLabel>
+                    <FormControlLabel as='strong'>Sobre a Empresa</FormControlLabel>
                     <Input  as={"textarea"} rows={15} style={{resize:"none"}} placeholder="Fale sobre a empresa ..." onChange={v=>formik.setFieldValue('about',v)}  value={formik.values.about}  />
                   <Form.ErrorMessage  placement="rightEnd" className="msg-error"  show={!!formik.errors.about}>{formik.errors.about}</Form.ErrorMessage>
                 </Form.Group>
                 <HStack justifyContent="center" alignItems="center">
-                  <Button type="submit" appearance="primary" style={{width:'50%'}} size="md" onClick={formik.submitForm}>enviar</Button>
+                  <Button type="submit" appearance="primary" style={{width:'50%'}} size="lg" onClick={formik.submitForm}>enviar</Button>
                 </HStack>
               </Form>
             </div>

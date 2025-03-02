@@ -244,7 +244,8 @@ const deleteCurriculumUser=(id:number)=>{
                         <VStack justifyContent="center" style={{margin:'20px'}}>
                            <Text>Alterar tema da plataforma:</Text>
                             <div>
-                              <Toggle style={{padding:'9px'}} size="md" onChange={()=>handleTheme(theme === 'light' ? 'dark' : 'light')} checkedChildren="light" unCheckedChildren="dark"  />
+                              <Toggle style={{padding:'9px'}} size="md" onChange={()=>handleTheme(theme === 'light' ? 'dark' : 'light')} 
+                              checkedChildren={theme === 'light' ? 'dark' : 'light'} unCheckedChildren={theme === 'light' ? 'dark' : 'light'}  />
                             </div>
                         </VStack>
                            

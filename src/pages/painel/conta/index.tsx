@@ -15,8 +15,12 @@ import FormControlLabel from "rsuite/esm/FormControlLabel"
 import {Form,Text} from "rsuite"
 import EyeCloseIcon from '@rsuite/icons/EyeClose'
 import VisibleIcon from '@rsuite/icons/Visible'
+import useThemeStore from "../../../zustand/theme.zustand"
+import useCompanyStore from "../../../zustand/company.zustand"
 
 export const ContaPainel=()=>{
+  const {deleteCompany}=useCompanyStore()
+    const {deleteTheme}=useThemeStore() 
     const [visible, setVisible] =useState(false)
     const {user,setUser,SigOut}=useAuthContext()
     const [open,setOpen]=useState(false)
@@ -57,6 +61,8 @@ export const ContaPainel=()=>{
           }).then((result) => {
             if (result) {
                 SigOut()
+                deleteTheme()
+                deleteCompany()
                 navigate('/')
                 toast.success('você saiu da conta')
             } else {

@@ -1,6 +1,8 @@
 import axios from "axios"
 import { baseURL } from "../config/axios.config"
 import {ICompany } from "../interfaces/company"
+import error from "../assets/svgs/error"
+import user from "../assets/svgs/user"
 
 export type TCompany={
     idcreator:number,
@@ -21,11 +23,10 @@ export default {
     getCompanyFromUser:async(idcreator:number)=>{
         try{
             const response=await axios.get<ICompany>(`${baseURL}users/${idcreator}/companys`)
-
-             if(response.status === 200){
+             if(response.data.name){
                return response.data    
             }else{
-                return 'algo deu errado'
+                return {error:'não existe usuário'}
             }
         }catch(e){
 

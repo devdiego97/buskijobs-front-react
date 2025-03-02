@@ -1,5 +1,6 @@
 import { HTMLAttributes, ReactNode } from "react"
 import { Box } from "./style"
+import { Card } from "rsuite";
 
 
 
@@ -10,7 +11,8 @@ export interface IBoxImageText extends HTMLAttributes<HTMLDivElement>{
     radius?:string
 }
 export default ({children,...rest}:IBoxImageText)=>{
-    return <Box  {...rest}>
+    return <Card>
+        <Box  {...rest}>
         <div className="overlay"></div>
         <div className="conteudo">
            {children}
@@ -18,4 +20,5 @@ export default ({children,...rest}:IBoxImageText)=>{
     
     
     </Box>
+    </Card>
 }
