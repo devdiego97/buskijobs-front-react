@@ -1,6 +1,6 @@
 import { HTMLAttributes, ReactNode } from "react"
 import { Box } from "./style"
-import { Card } from "rsuite";
+import { Card } from "rsuite"
 
 
 

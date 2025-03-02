@@ -1,6 +1,6 @@
 
-import { TextareaHTMLAttributes } from "react";
-import { ContainerTextArea } from "./style";
+import { TextareaHTMLAttributes } from "react"
+import { ContainerTextArea } from "./style"
 
 
 

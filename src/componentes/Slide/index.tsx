@@ -1,21 +1,21 @@
 
-import React from 'react';
-import Slider from 'react-slick';
-import 'slick-carousel/slick/slick.css';
-import 'slick-carousel/slick/slick-theme.css';
-import { ContainerSlide } from './style';
-import { Link } from 'react-router-dom';
-import { IJob } from '../../interfaces/job';
+import React from 'react'
+import Slider from 'react-slick'
+import 'slick-carousel/slick/slick.css'
+import 'slick-carousel/slick/slick-theme.css'
+import { ContainerSlide } from './style'
+import { Link } from 'react-router-dom'
+import { IJob } from '../../interfaces/job'
 
 interface SlideCard {
-  id:number,
-  title: string;
-  location: string;
-  salary: number;
+  id:number
+  title: string
+  location: string
+  salary: number
 }
 
 interface SlideCardCarouselProps {
-  cards: IJob[];
+  cards: IJob[]
 }
 
 const SlideCardCarousel: React.FC<SlideCardCarouselProps> = ({ cards }) => {

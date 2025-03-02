@@ -1,15 +1,12 @@
 import { ContentPage } from "../../componentes/ContentPage"
 import { Layout } from "../../componentes/Layout"
 import { BoxCurriculum, NotCurriculum, PDFPage, Page } from "./style"
-import { useAuthContext } from "../../context/authContext"
 import { Link, useNavigate } from "react-router-dom"
 import { useEffect, useRef, useState } from "react"
 import  Swal from 'sweetalert'
 import { toast } from "react-toastify"
 import { apiCurriculum } from "../../services/apiCurriculum"
-import { ICurriculum } from "../../interfaces/curriculum"
 import generatePDF, {  Margin,Options } from 'react-to-pdf'
-import { useGlobalContext } from "../../context/globalContext"
 import {Card, Divider, Form, HStack, InputGroup, Modal, Tag, Toggle} from "rsuite"
 import { baseURL } from "../../config/axios.config"
 import Loading from "../../componentes/Loading"
@@ -25,8 +22,6 @@ import FormGroup from "rsuite/esm/FormGroup"
 import FormControlLabel from "rsuite/esm/FormControlLabel"
 import EyeCloseIcon from '@rsuite/icons/EyeClose'
 import VisibleIcon from '@rsuite/icons/Visible'
-import CheckIcon from '@rsuite/icons/Check'
-import CloseIcon from '@rsuite/icons/Close'
 import useThemeStore from "../../zustand/theme.zustand"
 import useAuthStore from "../../zustand/auth.zustand"
 import { IUser } from "../../interfaces/user"
@@ -36,28 +31,18 @@ import useCurriculumStore from "../../zustand/curriculum.zustand"
 
 export const Conta=()=>{
   
-    const {curriculum,deleteCurriculum,saveCurriculum}=useCurriculumStore()
-    const [curriculumPdf,setCurriculumPdf]=useState(false)
-    const {theme,handleTheme}=useThemeStore()
-    const {user,saveUser,deleteUser}=useAuthStore()
+     const {curriculum,deleteCurriculum}=useCurriculumStore()
+     const {theme,handleTheme,deleteTheme}=useThemeStore()
+     const {user,saveUser,deleteUser,deleteToken}=useAuthStore()
      const [visible, setVisible] =useState(false)
      const [open,setOpen]=useState(false)
      const [targetRef,setTargetRef]=useState(null)
      const getTargetElement =()=>document.getElementById('content-id') 
-     //const {user,setUser,SigOut,setCurriculumContext}=useAuthContext()
-     //const [curriculum,setCurriculum]=useState<ICurriculum | null>(null)
-     const [hasCurriculum,setHasCurriculum]=useState(false)
      const navigate=useNavigate()
      const [loadingCurriculum,setLoadingCurriculum]=useState(true)
-    const boxNotRef=useRef<HTMLDivElement | null>(null)
+     const boxNotRef=useRef<HTMLDivElement | null>(null)
 
-    const [initialValues,setInitialValues]=useState({
-      name:user ? user.name : '',
-      lastname:user ? user.lastname : '',
-      tel:user ? user.tel: '',
-      email:user ? user.email : '',
-      password:user ? user.password : ''
-    })
+   
 
     const stylePDF:Options = {
         method:'save',
@@ -116,9 +101,12 @@ const SigOutUser=()=>{
         ,
       }).then((result) => {
         if (result) {
-          localStorage.clear()
+          deleteCurriculum()
+          deleteUser()
+          deleteTheme()
+          deleteToken()
           navigate('/')
-          window.location.reload()
+         // window.location.reload()
          toast.success('você saiu da conta')
         }  else {
             console.log(result)
@@ -129,7 +117,13 @@ const SigOutUser=()=>{
 }
 
 const formik=useFormik({
- initialValues:initialValues,
+ initialValues:{
+      name:user ? user.name : '',
+      lastname:user ? user.lastname : '',
+      tel:user ? user.tel: '',
+      email:user ? user.email : '',
+      password:user ? user.password : ''
+ },
   validationSchema:schemaValidateUpdateUser,
   onSubmit:async (values,{resetForm})=>{
     if(user !== null ){
@@ -144,13 +138,7 @@ const formik=useFormik({
                 saveUser(upUser as IUser)
                 toast.success('Dados atualizado com sucesso')
                 setOpen(false)
-                setInitialValues({
-                  name:data.name,
-                  lastname:data.lastname,
-                  tel:data.tel,
-                  email:data.email,
-                  password:data.password
-                 })
+                
               }else{
                 toast.error('algo deu errado')
               }

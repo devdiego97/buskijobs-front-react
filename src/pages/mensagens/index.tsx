@@ -6,11 +6,11 @@ import FlexboxGridItem from "rsuite/esm/FlexboxGrid/FlexboxGridItem"
 import { useEffect, useState } from "react"
 import { IMessage } from "../../interfaces/message"
 import apiMessage from "../../services/apiMessage"
-import { useAuthContext } from "../../context/authContext"
+import useAuthStore from "../../zustand/auth.zustand"
 
 
 export const Mensagens= ()=>{
-    const { user}=useAuthContext()
+    const { user}=useAuthStore()
     const [error,setError]=useState(false)
     const [open,setOpen]=useState(false)
     const [loading,setLoading]=useState(true)
@@ -124,38 +124,3 @@ export const Mensagens= ()=>{
     </Layout>
 }
 
-{/*
-messagesList.map(m=><Card className="card">
-                        <Card.Header>
-                           <div className="show-grid"> 
-                            <FlexboxGrid justify="space-between" >
-                                <FlexboxGrid.Item >
-                                    <HStack>
-                                      <Avatar src="https://i.pravatar.cc/150?u=2" size="md" circle /> 
-                                      <Text>{m.name}</Text>
-                                    </HStack>
-                                </FlexboxGrid.Item>
-                                <FlexboxGrid.Item>
-                                   <Text size={'sm'}>recebida em 12/01/2026</Text>
-                                </FlexboxGrid.Item>
-                            </FlexboxGrid>
-                           </div>
-                        </Card.Header>
-                        <Card.Body>
-                            <Text maxLines={2}>{m.text}</Text>
-                        </Card.Body>
-                        <Card.Footer>
-                                <FlexboxGrid justify="end">
-                                 <FlexboxGridItem>
-                                     <Button appearance="primary" style={{margin:'9px'}} onClick={()=>hadleModalSetFromMessage(m)}>abrir</Button>
-                                     <Button appearance="primary" style={{margin:'9px'}}>deletar</Button>
-                                 </FlexboxGridItem>
-                                </FlexboxGrid>
-                            
-                        </Card.Footer>
-                    </Card>
-)
-
-
-
-*/}

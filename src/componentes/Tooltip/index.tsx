@@ -1,5 +1,5 @@
 import { ReactNode } from "react"
-import { Button, Tooltip, Whisper } from "rsuite"
+import {  Tooltip, Whisper } from "rsuite"
 
 type Props={
     placement:'top'

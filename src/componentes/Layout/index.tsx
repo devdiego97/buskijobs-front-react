@@ -3,10 +3,9 @@ import { Container } from "./style"
 import { Header } from "../Header"
 import { Footer } from "../Footer"
 import { motion } from 'framer-motion';
-import { apiCurriculum } from "../../services/apiCurriculum";
-import { useAuthContext } from "../../context/authContext";
-import useCurriculumStore from "../../zustand/curriculum.zustand";
-import useAuthStore from "../../zustand/auth.zustand";
+import { apiCurriculum } from "../../services/apiCurriculum"
+import useCurriculumStore from "../../zustand/curriculum.zustand"
+import useAuthStore from "../../zustand/auth.zustand"
 
 
 type PropsApp={

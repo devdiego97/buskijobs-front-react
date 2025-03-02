@@ -1,12 +1,12 @@
 import { ReactNode, useEffect } from "react"
-import { useAuthContext } from "../../context/authContext"
 import { useNavigate } from "react-router-dom"
+import useAuthStore from "../../zustand/auth.zustand"
 
 type Props={
     children:ReactNode
 }
 export  const PrivateRecruiter=({children}:Props)=>{
-    const {user}=useAuthContext()
+    const {user}=useAuthStore()
     const navigate=useNavigate()
     
     useEffect(()=>{

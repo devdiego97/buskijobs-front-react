@@ -1,6 +1,6 @@
 import ReactLoading from 'react-loading'
- import { LoadingType } from 'react-loading';
-import { Container } from './style';
+ import { LoadingType } from 'react-loading'
+import { Container } from './style'
 
 type Props={
     type:LoadingType,

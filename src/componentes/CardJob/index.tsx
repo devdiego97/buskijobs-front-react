@@ -7,6 +7,7 @@ import SalaryIcon from './../../assets/svgs/salary'
 import LocationIcon from './../../assets/svgs/location'
 import CompanyIcon from './../../assets/svgs/company'
 import { Text } from "rsuite"
+
 type Props={
   job:IJob
 

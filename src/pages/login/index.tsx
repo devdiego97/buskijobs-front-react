@@ -4,7 +4,6 @@ import { Page } from "./style"
 import { toast } from "react-toastify"
 import { Link, useNavigate, useParams } from "react-router-dom"
 import { useEffect, useState } from "react"
- import { useAuthContext } from "../../context/authContext"
 import { Layout } from "../../componentes/Layout"
 import { apiAuth } from "../../services/auth.action"
 import { Heading,Text, VStack,Form, HStack,Input,Container,
@@ -27,7 +26,6 @@ import useAuthStore from "../../zustand/auth.zustand"
 
 export const Login=()=>{
     const {saveUser,saveToken}=useAuthStore()
-    const {SigIn}=useAuthContext()
     const {type}=useParams()
     const navigate=useNavigate()
     const [visible, setVisible] =useState(false)
@@ -51,11 +49,11 @@ export const Login=()=>{
                     navigate('/vagas')
                     saveUser(user)
                     saveToken(token)
-                    SigIn(user,token)
                     toast.success('login feito com sucesso')
                 }else if(user.type === 'recrutador'){
                     navigate('/painel/recrutador')
-                    SigIn(user,token)
+                    saveUser(user)
+                    saveToken(token)
                 }
             
             }else{

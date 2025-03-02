@@ -1,7 +1,7 @@
-import ReactLoading from 'react-loading';
-import { GlobalStyle } from '../../globalStyle';
-import { useGlobalContext } from '../../context/globalContext';
-import { Box } from './style';
+import ReactLoading from 'react-loading'
+import { GlobalStyle } from '../../globalStyle'
+import { useGlobalContext } from '../../context/globalContext'
+import { Box } from './style'
 
 type Props={
     text:string

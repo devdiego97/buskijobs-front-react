@@ -1,10 +1,10 @@
-import React, { useEffect } from 'react';
-import Swiper from 'swiper';
+import React, { useEffect } from 'react'
+import Swiper from 'swiper'
 import 'swiper/swiper-bundle.css';
-import { IJob } from '../../interfaces/job';
+import { IJob } from '../../interfaces/job'
 import './style.css'
-import { baseURL } from '../../config/axios.config';
-import { Link } from 'react-router-dom';
+import { baseURL } from '../../config/axios.config'
+import { Link } from 'react-router-dom'
 
 type Props={
     jobsData:IJob[],
@@ -29,7 +29,7 @@ export default ({jobsData}:Props)=>{
                   <div key={k} className="swiper-slide">
                     <img src={j.company.logo !== null ? `${baseURL}public/images/${j.company?.logo}` : 'assets/icons/company-logo.png'} alt="" />
                     <h3>{j.title}</h3>
-                    <p>{j.location}</p>
+                    <p>{j.modelOperating?.name}</p>
                     <p>{j.company.name}</p>
                     <Link to={`/vagas/${j.id}`}>ver vaga</Link>
                   </div>

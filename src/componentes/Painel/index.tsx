@@ -1,20 +1,20 @@
 import {Link}  from 'react-router-dom'
 import { Container, HeaderPainel, Main } from "./style"
-import { ReactNode, useEffect, useState } from 'react'
+import { ReactNode, useEffect} from 'react'
 import List from '../../assets/svgs/list'
 import Addlist from '../../assets/svgs/addlist'
 import Home from '../../assets/svgs/home'
 import Candidatesearch from '../../assets/svgs/candidatesearch'
 import User from '../../assets/svgs/user'
 import Company from '../../assets/svgs/company'
-import { useAuthContext } from '../../context/authContext'
 import apiCompany from '../../services/apiCompany'
 import { ICompany } from '../../interfaces/company'
 import { motion } from 'framer-motion';
 import Rocket from '../../assets/svgs/rocket'
-import { Toggle, VStack,Text, Tag, HStack, Divider } from 'rsuite'
+import { Toggle, VStack,Text, Tag} from 'rsuite'
 import useCompanyStore from '../../zustand/company.zustand'
 import useThemeStore from '../../zustand/theme.zustand'
+import useAuthStore from '../../zustand/auth.zustand'
 
 
 
@@ -24,9 +24,9 @@ type Props={
 }
 
 export const Painel=({children,p}:Props)=>{
-    const {company,saveCompany,deleteCompany}=useCompanyStore()
+    const {company,saveCompany}=useCompanyStore()
     const {handleTheme,theme}=useThemeStore()
-    const {user}=useAuthContext()
+    const {user}=useAuthStore()
     
    
     useEffect(()=>{

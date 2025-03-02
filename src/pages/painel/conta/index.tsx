@@ -1,7 +1,6 @@
 import { useNavigate } from "react-router-dom"
 import { ContentPage } from "../../../componentes/ContentPage"
 import { Painel } from "../../../componentes/Painel"
-import { useAuthContext } from "../../../context/authContext"
 import {  Page } from "./style"
 import  Swal from 'sweetalert'
 import { toast } from "react-toastify"
@@ -17,15 +16,20 @@ import EyeCloseIcon from '@rsuite/icons/EyeClose'
 import VisibleIcon from '@rsuite/icons/Visible'
 import useThemeStore from "../../../zustand/theme.zustand"
 import useCompanyStore from "../../../zustand/company.zustand"
+import useAuthStore from "../../../zustand/auth.zustand"
+import { IUser } from "../../../interfaces/user"
 
 export const ContaPainel=()=>{
   const {deleteCompany}=useCompanyStore()
     const {deleteTheme}=useThemeStore() 
     const [visible, setVisible] =useState(false)
-    const {user,setUser,SigOut}=useAuthContext()
+    const {user,saveUser,deleteUser}=useAuthStore()
     const [open,setOpen]=useState(false)
     const [edite,setEdite]=useState(false)
     const navigate=useNavigate()
+
+
+    
     const [initialValues,setInitialValues]=useState({
         name:user ? user.name : '',
         lastname:user ? user.lastname : '',
@@ -60,9 +64,9 @@ export const ContaPainel=()=>{
             ,
           }).then((result) => {
             if (result) {
-                SigOut()
-                deleteTheme()
-                deleteCompany()
+               deleteCompany()
+               deleteTheme()
+               deleteUser()
                 navigate('/')
                 toast.success('você saiu da conta')
             } else {
@@ -77,7 +81,7 @@ export const ContaPainel=()=>{
 const formik=useFormik({
     initialValues:initialValues,
      validationSchema:schemaValidateUpdateUser,
-     onSubmit:async (values,{resetForm})=>{
+     onSubmit:async (values)=>{
       if(user !== null ){
            const data={
              ...values,
@@ -86,7 +90,7 @@ const formik=useFormik({
            }
            const result=await apiUsers.updateUser(user.id as number,data)
            if(result){
-             setUser({id:user?.id,...data})
+             saveUser({id:user?.id,...data} as IUser)
              setInitialValues({
               name:data.name,
               lastname:data.lastname,

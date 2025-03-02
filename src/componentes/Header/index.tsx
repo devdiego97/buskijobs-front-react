@@ -3,12 +3,12 @@ import { Container } from "./style"
 import { useGlobalContext } from "../../context/globalContext"
 import MenuBurguerIcon from './../../assets/icons/menuburguer.png'
 import MenuCloseIcon from './../../assets/icons/close.png'
-import { useAuthContext } from "../../context/authContext"
 import { baseURL } from "../../config/axios.config"
+import useAuthStore from "../../zustand/auth.zustand"
 
 
 export const Header=()=>{
-  const {user}=useAuthContext()
+  const {user}=useAuthStore()
   const {stateMobile,handleStateMobile}=useGlobalContext()
   const conditionLinkClick=()=>stateMobile ? handleStateMobile(false) : handleStateMobile(true)
 

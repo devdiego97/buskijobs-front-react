@@ -1,22 +1,21 @@
 import { ReactNode, useEffect } from "react"
-import { useAuthContext } from "../../context/authContext"
-import { useLocation, useNavigate } from "react-router-dom"
+import {  useNavigate } from "react-router-dom"
+import useAuthStore from "../../zustand/auth.zustand"
 
 type Props={
     children:ReactNode
 }
 export  const PrivateCandidate=({children}:Props)=>{
-    const {pathname}=useLocation()
-    const {user}=useAuthContext()
+    const {user}=useAuthStore()
     const navigate=useNavigate()
     
     useEffect(()=>{
-        if(user?.type=== 'recrutador' ){
+        if(user?.type  === 'recrutador' ){
             navigate('/painel/recrutador/')
         }
     },[])
     
-    if(user?.type=== 'candidato'){
+    if(user?.type === 'candidato'){
         return children
     }
 }
