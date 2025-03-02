@@ -28,21 +28,27 @@ import VisibleIcon from '@rsuite/icons/Visible'
 import CheckIcon from '@rsuite/icons/Check'
 import CloseIcon from '@rsuite/icons/Close'
 import useThemeStore from "../../zustand/theme.zustand"
+import useAuthStore from "../../zustand/auth.zustand"
+import { IUser } from "../../interfaces/user"
+import useCurriculumStore from "../../zustand/curriculum.zustand"
 
 
 
 export const Conta=()=>{
+  
+    const {curriculum,deleteCurriculum,saveCurriculum}=useCurriculumStore()
+    const [curriculumPdf,setCurriculumPdf]=useState(false)
     const {theme,handleTheme}=useThemeStore()
-     
+    const {user,saveUser,deleteUser}=useAuthStore()
      const [visible, setVisible] =useState(false)
      const [open,setOpen]=useState(false)
      const [targetRef,setTargetRef]=useState(null)
      const getTargetElement =()=>document.getElementById('content-id') 
-     const {user,setUser,SigOut,setCurriculumContext}=useAuthContext()
-     const [curriculum,setCurriculum]=useState<ICurriculum | null>(null)
+     //const {user,setUser,SigOut,setCurriculumContext}=useAuthContext()
+     //const [curriculum,setCurriculum]=useState<ICurriculum | null>(null)
      const [hasCurriculum,setHasCurriculum]=useState(false)
      const navigate=useNavigate()
-    const [loadingCurriculum,setLoadingCurriculum]=useState(true)
+     const [loadingCurriculum,setLoadingCurriculum]=useState(true)
     const boxNotRef=useRef<HTMLDivElement | null>(null)
 
     const [initialValues,setInitialValues]=useState({
@@ -55,7 +61,7 @@ export const Conta=()=>{
 
     const stylePDF:Options = {
         method:'save',
-        filename:`${curriculum !== null ? `${curriculum.user?.name}${curriculum.user?.lastname}-curriculo.pdf`: 'curriculo.pdf'}`,
+        filename:`${curriculum !== null ? `${curriculum?.name}${curriculum?.lastname}-curriculo.pdf`: 'curriculo.pdf'}`,
         page: {
           
            margin: Margin.MEDIUM,
@@ -65,44 +71,24 @@ export const Conta=()=>{
     
     }
     const GeneratePDF=()=>{ 
-        const box=document.getElementById('content-id')  as HTMLDivElement
-        box.style.display='flex'
-        generatePDF(getTargetElement,stylePDF)
-        box.style.display='none'
-    }
+      const box=document.getElementById('content-id')  as HTMLDivElement
+      box.style.display='flex'
+      generatePDF(getTargetElement,stylePDF)
+      box.style.display='none'
+  }
+    useEffect(()=>{
+      setTimeout(() => {
+        setLoadingCurriculum(false)
+      }, 1000);
+    })
+
     
 
-
     useEffect(()=>{
-        const getCurriculumUser=async()=>{
-          if(user !== null){
-                const curriculumId=await apiCurriculum.getCurriculumFromUser(user.id as number)
-               if(typeof curriculumId !== 'string'){
-                setCurriculum(curriculumId)
-                setHasCurriculum(true)
-                setCurriculumContext(curriculumId)
-                setLoadingCurriculum(false)
-                localStorage.setItem('@curri',JSON.stringify(curriculum))
-               }else{
-                  setHasCurriculum(false)
-                  setCurriculumContext(null)
-                  setLoadingCurriculum(false)
-               }
-            }
-           
-          }
-        
-  setInterval(() => {
-      getCurriculumUser()
-      },4000) 
-      
-    },[])
-
-    useEffect(()=>{
-      if(!hasCurriculum && boxNotRef.current){
+      if(!curriculum && boxNotRef.current){
         boxNotRef.current.style.display='flex' 
       }
-    },[hasCurriculum])
+    },[curriculum])
 
 const SigOutUser=()=>{
     Swal({
@@ -130,12 +116,11 @@ const SigOutUser=()=>{
         ,
       }).then((result) => {
         if (result) {
-            SigOut()
-            localStorage.clear()
-            navigate('/')
-            window.location.reload()
+          localStorage.clear()
+          navigate('/')
+          window.location.reload()
          toast.success('você saiu da conta')
-        } else {
+        }  else {
             console.log(result)
         }
       })
@@ -155,8 +140,8 @@ const formik=useFormik({
               }
               const result=await apiUsers.updateUser(user.id as number,data)
               if(result){
-                setUser({id:user?.id,...data})
-                localStorage.setItem('@u',JSON.stringify({id:user?.id,...data}))
+                let upUser={id:user?.id,...data}
+                saveUser(upUser as IUser)
                 toast.success('Dados atualizado com sucesso')
                 setOpen(false)
                 setInitialValues({
@@ -205,9 +190,7 @@ const deleteCurriculumUser=(id:number)=>{
       if (result) {
         const deleteCurriculum=async()=>{
           await apiCurriculum.deleteCurriculum(id)
-          setCurriculumContext(null)
-          setCurriculum(null)
-          localStorage.removeItem('@curri')
+          deleteCurriculum()
        }
         deleteCurriculum()
         toast.success('curriculo deletado')
@@ -256,14 +239,15 @@ const deleteCurriculumUser=(id:number)=>{
          <div className="right">
             {loadingCurriculum && <Loading text="Carregando seu curriculo.." type="bubbles" color={`${GlobalStyle.bgTheme}`} />}
             {!loadingCurriculum &&
-                (hasCurriculum && curriculum ) && <Card style={{padding:'22px'}} as={"span"}>
+                curriculum  && <Card style={{padding:'22px'}} as={"span"}>
                   <BoxCurriculum ref={boxNotRef}>
                     <div className="top">
-                        <span onClick={()=>GeneratePDF()}>Baixar PDF</span>
-                        <span onClick={()=>navigate(`/atualizar_curriculo/${curriculum.id}`)}>Editar</span>
-                        <span onClick={()=>deleteCurriculumUser(curriculum.id)}>Excluir</span>
+                        <HStack>
+                          <Button color="green" appearance="primary" onClick={GeneratePDF}>Baixar PDF</Button>
+                          <Button appearance="primary" color="blue" onClick={()=>navigate(`/atualizar_curriculo/${curriculum.id}`)}>Editar</Button>
+                          <Button appearance="primary" color="red" onClick={()=>deleteCurriculumUser(curriculum.id)}>Excluir</Button>
+                        </HStack>
                     </div>
-                    <Divider></Divider>
                     {curriculum !== null ? <PDFPage ref={targetRef} id="content-id">
                                <div className="data-profile">
                                 <div className="top-pdf">
@@ -316,8 +300,8 @@ const deleteCurriculumUser=(id:number)=>{
                                 </section>
                            </PDFPage> : null
                         }
-
-                     <div className="header">
+                    <Divider></Divider>
+                    <div className="header">
                         <h2>{curriculum?.name} {curriculum?.lastname}</h2>
                         <div className="info">
                             <span>Email:{curriculum?.email}</span>
@@ -380,7 +364,7 @@ const deleteCurriculumUser=(id:number)=>{
                 </BoxCurriculum> 
                 </Card>
             }
-             {(!hasCurriculum && !loadingCurriculum) && <NotCurriculum>
+             {(!curriculum && !loadingCurriculum) && <NotCurriculum>
                <div className="box">
                    <div className="text">
                         <h3>Olá {user?.name}</h3>
@@ -392,8 +376,9 @@ const deleteCurriculumUser=(id:number)=>{
             }
          </div>
    
+    
 
-         <Modal open={open} size={"md"} >
+         <Modal open={open} size={"md"} style={{marginTop:'50px'}}>
               <Modal.Header closeButton={false} >
                 <Modal.Title>Atualize seus dados de usuário</Modal.Title>
                 <Divider />

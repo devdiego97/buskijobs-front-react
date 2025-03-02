@@ -12,7 +12,7 @@ import apiCompany from '../../services/apiCompany'
 import { ICompany } from '../../interfaces/company'
 import { motion } from 'framer-motion';
 import Rocket from '../../assets/svgs/rocket'
-import { Toggle, VStack,Text } from 'rsuite'
+import { Toggle, VStack,Text, Tag, HStack, Divider } from 'rsuite'
 import useCompanyStore from '../../zustand/company.zustand'
 import useThemeStore from '../../zustand/theme.zustand'
 
@@ -52,8 +52,11 @@ export const Painel=({children,p}:Props)=>{
                 <div className="cx-img">
                     <img src="/imgs/logo.png" alt="" />
                 </div>
-                <hr />
-                <p>{company?.name}</p>
+               
+                {company && <VStack alignItems='center' >
+                     <Tag  color='violet' size='lg'>{company?.name}</Tag>
+                  </VStack>
+               }
             </div>
             <div className="cx-btn">
                    <button>abrir</button>

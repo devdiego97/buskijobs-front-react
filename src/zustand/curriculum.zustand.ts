@@ -5,7 +5,7 @@ import { ICurriculum } from '../interfaces/curriculum';
 // Define o tipo do estado
 interface ICurriculumStore {
   curriculum: ICurriculum | null,
-  saveCurriculum: (newcurriculum:ICurriculum) => void;
+  saveCurriculum: (newcurriculum:ICurriculum | null) => void;
   deleteCurriculum: () => void;
  
 }
@@ -15,7 +15,7 @@ const useCurriculumStore = create<ICurriculumStore>()(
   persist(
     (set) => ({
         curriculum:null,
-        saveCurriculum: (newCurriculum: ICurriculum) => set({ curriculum: newCurriculum }),
+        saveCurriculum: (newCurriculum: ICurriculum | null) => set({ curriculum: newCurriculum }),
       deleteCurriculum: () => set(() => ({ curriculum:null})),
      
     }),

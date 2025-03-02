@@ -1,8 +1,8 @@
 import axios from "axios"
 import { baseURL } from "../config/axios.config"
 import {ICompany } from "../interfaces/company"
-import error from "../assets/svgs/error"
-import user from "../assets/svgs/user"
+
+
 
 export type TCompany={
     idcreator:number,
@@ -23,13 +23,14 @@ export default {
     getCompanyFromUser:async(idcreator:number)=>{
         try{
             const response=await axios.get<ICompany>(`${baseURL}users/${idcreator}/companys`)
-             if(response.data.name){
+             if(response.status=200){
                return response.data    
             }else{
                 return {error:'não existe usuário'}
             }
         }catch(e){
-
+            console.error("Error em  getCompanyFromUser:", e)
+            return { error: "Falha em buscar empresa pelo id do recrutador" }
         }
     },
     getCompanyId:async(id:number)=>{

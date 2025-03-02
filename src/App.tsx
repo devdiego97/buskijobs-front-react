@@ -7,7 +7,7 @@ import ptBR from "rsuite/locales/pt_BR"
 import enUS from "rsuite/locales/en_US"
 import frFR from "rsuite/locales/fr_FR"
 import { useGlobalContext } from './context/globalContext'
-import useUserStore from './zustand/user.zustand'
+import useUserStore from './zustand/auth.zustand'
 import useThemeStore from './zustand/theme.zustand'
 
 function App() {

@@ -1,6 +1,6 @@
 import { ReactNode, createContext, useContext, useEffect, useState } from "react"
 import { ICurriculum } from "../interfaces/curriculum"
-import { CompanyInterface } from "../interfaces/company"
+import { ICompany } from "../interfaces/company"
 import axios from "axios"
 
 
@@ -27,7 +27,7 @@ type User={
     password:string,
     type:string,
     tel:string,
-    company?:CompanyInterface
+    company?:ICompany
 }
 type SigInType={
     user:User,
@@ -39,8 +39,8 @@ type ContextType={
     user:User | null,
     setUser:(user:User | null)=>void,
     curriculumContext:ICurriculum | null,
-    company:CompanyInterface | null,
-    setCompany:(company:CompanyInterface | null)=>void,
+    company:ICompany | null,
+    setCompany:(company: ICompany| null)=>void,
     setCurriculumContext:(curriculum:ICurriculum | null)=>void,
     SigIn:(user:User,token:string)=>void,
     SigUp:(user:TUser,token:string)=>void,
@@ -53,7 +53,7 @@ const contextAuth=createContext<ContextType>({} as ContextType)
 export const AuthProvider=({children}:props)=>{
     const [user,setUser]=useState<User | null>(null)
     const [curriculumContext,setCurriculumContext]=useState<ICurriculum | null>(null)
-    const [company,setCompany]=useState<CompanyInterface | null>(null)
+    const [company,setCompany]=useState<ICompany | null>(null)
     
 useEffect(()=>{
     const storageUser=localStorage.getItem('@u')

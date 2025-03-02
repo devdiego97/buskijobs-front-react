@@ -7,7 +7,6 @@ import { useEffect, useState } from "react"
  import { useAuthContext } from "../../context/authContext"
 import { Layout } from "../../componentes/Layout"
 import { apiAuth } from "../../services/auth.action"
-import * as y from 'yup'
 import { Heading,Text, VStack,Form, HStack,Input,Container,
       RadioGroup, Radio, Button, InputGroup, IconButton
 } from "rsuite"
@@ -20,13 +19,14 @@ import { MdOutlineAlternateEmail as Email} from "react-icons/md"
 import { MdOutlinePassword as Pass} from "react-icons/md"
 import { GlobalStyle } from "../../globalStyle"
 import { schemaValidateSigIn } from "../../validations/user.validation"
+import useAuthStore from "../../zustand/auth.zustand"
 
 
 
 
 
 export const Login=()=>{
-
+    const {saveUser,saveToken}=useAuthStore()
     const {SigIn}=useAuthContext()
     const {type}=useParams()
     const navigate=useNavigate()
@@ -45,10 +45,12 @@ export const Login=()=>{
         validationSchema:schemaValidateSigIn,
         onSubmit:async (values,{resetForm})=>{
            const response=await apiAuth.sigIn(values)
-            if(response.data.status === true){
+            if(response.data){
                 const {user,token}=response.data
                 if(user.type === 'candidato'){
                     navigate('/vagas')
+                    saveUser(user)
+                    saveToken(token)
                     SigIn(user,token)
                     toast.success('login feito com sucesso')
                 }else if(user.type === 'recrutador'){

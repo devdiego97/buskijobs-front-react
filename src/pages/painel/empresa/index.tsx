@@ -129,7 +129,7 @@ const deleteCompanyFromApi=async()=>{
               </div>
               <HStack justifyContent="flex-end" style={{padding:'30px'}}>
 
-                   <Link color="white" to={`/painel/recrutador/${user?.name.toLowerCase()}/${company.name}/edite_empresa`} >
+                   <Link color="white" to={`/painel/recrutador/${user?.name.toLowerCase()}/${company.name.toLowerCase()}/edite_empresa`} >
                      <Button appearance="primary" >Editar</Button>
                    </Link>
                   <Button appearance="primary" color="red"  onClick={deleteCompanyFromApi} >Deletar</Button>
